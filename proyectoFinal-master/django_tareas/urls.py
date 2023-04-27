@@ -18,5 +18,6 @@ urlpatterns = [
     path('iterarReact',views.iterarReact,name='iterarReact'),
     path('publicarComentario',views.publicarComentario,name='publicarComentario'),
     path('conseguirInfoUsuario',views.conseguirInfoUsuario,name='conseguirInfoUsuario'),
-    path('descargarReporteUsuarios/<str:idUsuario>',views.descargarReporteUsuarios,name='descargarReporteUsuarios')
+    path('descargarReporteUsuarios/<str:idUsuario>',views.descargarReporteUsuarios,name='descargarReporteUsuarios'),
+    path('ModificarDatosUsuario',views.ModificarDatosUsuario,name='ModificarDatosUsuario')
 ]

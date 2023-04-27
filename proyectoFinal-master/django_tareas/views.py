@@ -311,14 +311,26 @@ def descargarReporteUsuarios(request, idUsuario):
     return FileResponse(reporteUsuarios,as_attachment=True)
 
 def conseguirInfoUsuario(request):
-    DatosTotales = []
     idEditar = request.GET.get('idEditar')
     Usuario = User.objects.get(id=idEditar)
     InformacionExtra = datosUsuario.objects.get(user=Usuario)
+    print(idEditar)
     return JsonResponse({
         'username':Usuario.first_name,
         'email':Usuario.email,
         'nombre':Usuario.first_name,
         'apellido':Usuario.last_name,
         'ingreso':InformacionExtra.fechaIngreso.strftime("%d-%m-%Y"),
+        'cargaId':str(Usuario.id),
     })
+
+def ModificarDatosUsuario(request):
+    datos = json.load(request)
+    cargaId = datos.get('idusuario')
+    numerocambio = datos.get('nroCelular')
+    profesioncambio = datos.get('profesionUsuario')
+    usuariocambiar = User.objects.get(id=cargaId)
+    print(cargaId)
+    usuariocambiar.datosusuario.nroCelular = numerocambio
+    usuariocambiar.datosusuario.profesionUsuario = profesioncambio
+    usuariocambiar.datosusuario.save()
