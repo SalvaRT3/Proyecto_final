@@ -63,7 +63,7 @@
                                 <td>{{ usuario.datosusuario.nroCelular }}</td>
                                 <td>{{ usuario.datosusuario.fechaIngreso }}</td>
                                 <td class="text-center"><a class="btn btn-info" href="{% url 'django_tareas:verUsuario' usuario.id %}"><i class="fa-solid fa-eye"></i></a></td>
-                                <td class="text-center"><button data-bs-toggle="modal" data-bs-target="#editarUsuario" class="btn btn-warning" id="editar{{ usuario.id }}" onclick="editarUsuario(this.id)"><i class="fa-solid fa-edit"></i></button></td>
+                                <td class="text-center"><button data-bs-toggle="modal" data-bs-target="#editarUsuario" class="btn btn-warning" id="{{ usuario.id }}" onclick="editarUsuario(this.id)"><i class="fa-solid fa-edit"></i></button></td>
                                 <td class="text-center"><a class="btn btn-danger" href="{% url 'django_tareas:eliminarUsuario' usuario.id %}"><i class="fa-solid fa-trash"></i></a></td>
                             </tr>
                             {% endfor %}
@@ -149,23 +149,55 @@
 <div class="modal fade" id="editarUsuario" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h1 id="cargaId" style="display: none;"></h1>
-                <h5 class="modal-title">Crear nuevo usuario</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Editar usuario
-                <!--
-                    PREGUNTA 2
-                    Crear los inputs necesarios para poder cargar la informacion
-                    del usuario, indicar los label's de los campos apropiadamente
-                -->
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="actualizarUsuario()">Registrar</button>
-            </div>
+            <form method="post" action="{% url 'django_tareas:consolaAdministrador' %}">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title">Modificar datos del Usuario</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row form-group justify-content-around mb-3">
+                        <div class="col-5">
+                            <label>Username :</label>
+                            <input class="form-control" type="text" id="usernameMod" readonly>
+                        </div>
+                        <div class="col-5">
+                            <label>email :</label>
+                            <input class="form-control" type="text" id="emailMod" readonly>
+                        </div>
+                    </div>
+                    <div class="row form-group justify-content-around mb-3">
+                        <div class="col-5">
+                            <label>Nombre :</label>
+                            <input class="form-control" type="text" id="nombreMod" readonly>
+                        </div>
+                        <div class="col-5">
+                            <label>Apellido :</label>
+                            <input class="form-control" type="text" id="apellidoMod" readonly>
+                        </div>
+                    </div>
+                    <div class="row form-group justify-content-around mb-3">
+                        <div class="col-11">
+                            <label>Fecha de ingreso :</label>
+                            <input class="form-control" type="text" id="ingresoMod" readonly>
+                        </div>
+                    </div>
+                    <div class="row form-group justify-content-around mb-3">
+                        <div class="col-5">
+                            <label>Profesion :</label>
+                            <input class="form-control" type="text" id="profesionMod" required>
+                        </div>
+                        <div class="col-5">
+                            <label>Celular :</label>
+                            <input class="form-control" type="text" id="celularMod" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="actualizarUsuario()">Modificar Usuario</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

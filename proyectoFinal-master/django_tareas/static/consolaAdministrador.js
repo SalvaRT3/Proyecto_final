@@ -1,6 +1,22 @@
 function editarUsuario(idEditar)
 {
     console.log(idEditar)
+    fetch(`/conseguirInfoUsuario?idEditar=${idEditar}`)
+
+    .then(response => response.json())
+    .then(data => {
+        let usernameMod = document.getElementById('usernameMod')
+        let emailMod = document.getElementById('emailMod')
+        let nombreMod = document.getElementById('nombreMod')
+        let apellidoMod = document.getElementById('apellidoMod')
+        let ingresoMod = document.getElementById('ingresoMod')
+
+        usernameMod.value = data.username
+        emailMod.value = data.email
+        nombreMod.value = data.nombre
+        apellidoMod.value = data.apellido
+        ingresoMod.value = data.username
+    })
     /*
     PREGUNTA 3
     Capturar informacion del usuario desde base de datos y llenar

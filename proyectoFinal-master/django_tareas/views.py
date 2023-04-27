@@ -27,12 +27,12 @@ def index(request):
             return HttpResponseRedirect(reverse('django_tareas:index'))
     return render(request,'ingresoUsuario.html')
 
-##@login_required(login_url='/')
+@login_required(login_url='/')
 def cerrarSesion(request):
     logout(request)
     return HttpResponseRedirect(reverse('django_tareas:index'))
 
-##@login_required(login_url='/')
+@login_required(login_url='/')
 def consolaAdministrador(request):
     if request.user.datosusuario.tipoUsuario == 'ADMINISTRADOR':
         if request.method == 'POST':
@@ -74,7 +74,7 @@ def eliminarUsuario(request,ind):
     usuarioEliminar.delete()
     return HttpResponseRedirect(reverse('django_tareas:consolaAdministrador'))
 
-##@login_required(login_url='/')
+@login_required(login_url='/')
 def verUsuario(request, ind):
     usuarioInformacion = User.objects.get(id=ind)
     tareasUsuario = tareasInformacion.objects.filter(usuarioRelacionado=usuarioInformacion).order_by('id')
@@ -236,23 +236,7 @@ def publicarComentario(request):
     })
 
 def descargarReporteUsuarios(request, idUsuario):
-    """
-    PREGUNTA 1
-    En esta funcion debe generar un pdf utilizando la libreria reportlab
-    Este reporte debe contener la informacion de todos los usuarios a excepcion
-    de la contraseña y debe mostrar tambien la cantidad de tareas de cada 
-    usuarios (Solo la cantidad no es necesario la descripcion de todas)
-    Usuarios Nombre Apellido
-    Username        Fecha de ingreso       Numero de celular
-    Cantidad de tareas              Tipo de usuario
-    Agregar una descripcion de cabecera de la siguiente forma
-    Logo de DJANGO      Titulo: Reporte de usuarios     Logo de PUCP
-    Fecha de creacion del reporte
-    Cantidad de usuarios
-    Usuario que genera el reporte
-    Tipo de usuarios que genera el reporte
-    
-    """
+
     nombreArchivo = 'reporteUsuarios.pdf'
     usuarioInformacion = User.objects.get(id=idUsuario) 
     Usuarios_inscritos = User.objects.all().order_by('last_login')
@@ -325,3 +309,16 @@ def descargarReporteUsuarios(request, idUsuario):
     archivoPdf.save()
     reporteUsuarios=open(nombreArchivo,'rb')
     return FileResponse(reporteUsuarios,as_attachment=True)
+
+def conseguirInfoUsuario(request):
+    DatosTotales = []
+    idEditar = request.GET.get('idEditar')
+    Usuario = User.objects.get(id=idEditar)
+    InformacionExtra = datosUsuario.objects.get(user=Usuario)
+    return JsonResponse({
+        'username':Usuario.first_name,
+        'email':Usuario.email,
+        'nombre':Usuario.first_name,
+        'apellido':Usuario.last_name,
+        'ingreso':InformacionExtra.fechaIngreso.strftime("%d-%m-%Y"),
+    })
